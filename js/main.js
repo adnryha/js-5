@@ -1,141 +1,131 @@
-/* eslint-disable default-case */
-/* eslint-disable no-unmodified-loop-condition */
-/* eslint-disable func-style */
-/* eslint-disable require-jsdoc */
-/* eslint-disable max-lines-per-function */
-/* eslint-disable max-statements */
-/* eslint-disable no-undef */
-
-let container = null;
-let prevIndicator = null;
-
-function createContainer() {
-    elem = document.createElement('div');
-
-    elem.setAttribute('id', 'carousel');
-    elem.setAttribute('class', 'carousel');
-    document.querySelector('body').appendChild(elem);
-
-    container = document.querySelector('#carousel');
-}
-
-function createSlides(n) {
-    slidesContainer = document.createElement('ul');
-    slidesContainer.setAttribute('class', 'slides');
-
-    for (i = 0; i < n; i++) {
-        let slideItem = document.createElement('li');
-        let slideLink = document.createElement('a');
-
-        slideItem.setAttribute(
-            'class',
-            i === 0 ? 'slides__item active' : 'slides__item'
+function foundCarouselWrapper() {
+    carouselParent = document.querySelector('#carousel');
+   }
+    
+    // <ul> 
+    // <li> <a> </a> </li>
+    // </ul>
+    function createSlides(nthSlides) {
+      let slidesParent = document.createElement('ul');
+      slidesParent.setAttribute('class', 'slides');
+  
+      for (i = 0; i < nthSlides; i++) {
+        let slides__item = document.createElement('li');
+        let slides__link = document.createElement('a');
+  
+        slides__item.setAttribute('class',
+          i === 0 ? 'slides__item active' : 'slides__item'
         );
-        slideLink.setAttribute('href', '#');
-        slideItem.appendChild(slideLink);
-        slidesContainer.appendChild(slideItem);
-    }
-
-    container.appendChild(slidesContainer);
-}
-
-function createIndicators(n) {
-    indicatorsContainer = document.createElement('div');
-    indicatorsContainer.setAttribute('class', 'indicators');
-
-    for (i = 0; i < n; i++) {
-        let indicatorsItem = document.createElement('span');
-
-        indicatorsItem.setAttribute(
-            'class',
-            i === 0 ? 'indicators__item active' : 'indicators__item'
+        slides__link.setAttribute('href', '#');
+        slides__item.appendChild(slides__link);
+        slidesParent.appendChild(slides__item);
+      }
+      carouselParent.appendChild(slidesParent);
+    };
+  
+    // <div> 
+    // <span>  </span>
+    // </div>
+    function createIndicators(nthIndicators) {
+      let indicatorsParent = document.createElement('div');
+      indicatorsParent.setAttribute('class', 'indicators');
+  
+      for (i = 0; i < nthIndicators; i++) {
+        let indicators__item = document.createElement('span');
+        indicators__item.setAttribute('class',
+          i === 0 ? 'indicators__item active' : 'indicators__item'
         );
-        indicatorsItem.setAttribute('data-slide-to', i);
-        indicatorsContainer.appendChild(indicatorsItem);
+        indicators__item.setAttribute('data-slide-to', i);
+        indicatorsParent.appendChild(indicators__item);
+      }
+      carouselParent.appendChild(indicatorsParent);
     }
-
-    container.appendChild(indicatorsContainer);
-}
-
-function createControls() {
-    controlsContainer = document.createElement('div');
-    controlsContainer.setAttribute('class', 'controls');
-
-    for (i = 0; i < 3; i++) {
-        let controlItem = document.createElement('div');
-        let controlIcon = document.createElement('i');
-        const defItemClass = 'controls__item';
-        const defIconClass = 'fas';
-
-        switch (i) {
-            case 0:
-                controlItem.setAttribute('class', `${defItemClass} controls__prev`);
-                controlIcon.setAttribute('class', `${defIconClass} fa-chevron-left`);
-                break;
-            case 1:
-                controlItem.setAttribute('class', `${defItemClass} controls__next`);
-                controlIcon.setAttribute('class', `${defIconClass} fa-chevron-right`);
-                break;
-            case 2:
-                controlItem.setAttribute('class', `${defItemClass} controls__pause`);
-                controlIcon.setAttribute('class', `${defIconClass} fa-play`);
-                break;
+   
+    // <div> 
+    // <div> <i> </i> </div>
+    // </div>
+    function createControls(nthControls = 5) {
+      let controlsParent = document.createElement('div');
+      controlsParent.setAttribute('class', 'controls');
+  
+      for (i = 0; i < nthControls; i++) {
+        let controls__item = document.createElement('div');
+        let controls__fas = document.createElement('i');
+  
+        if (i === 0) {
+          controls__item.setAttribute('class', 'controls__item controls__prev');
+          controls__fas.setAttribute('class', 'fas fa-chevron-left');
+          controls__item.appendChild(controls__fas);
+          controlsParent.appendChild(controls__item);
+  
         }
-        controlItem.appendChild(controlIcon);
-        controlsContainer.appendChild(controlItem);
+        if (i === 1) {
+          controls__item.setAttribute('class', 'controls__item controls__next');
+          controls__fas.setAttribute('class', 'fas fa-chevron-right');
+          controls__item.appendChild(controls__fas);
+          controlsParent.appendChild(controls__item);
+  
+        }
+        if (i === 2) {
+          controls__item.setAttribute('class', 'controls__item controls__pause');
+          controls__fas.setAttribute('class', 'fas fa-play');
+          controls__item.appendChild(controls__fas);
+          controlsParent.appendChild(controls__item);
+          break;
+        }
+      }
+      carouselParent.appendChild(controlsParent);
     }
-    container.appendChild(controlsContainer);
-}
-
-function createStyle() {
-    styleContainer = document.createElement('style');
-    let styleCode = `
-    .controls,
-    .slides {
-      position: relative;
+    
+    // функция присвоения стиля элементам по классам
+    function createStyle() {
+      styleContainer = document.createElement('style');
+      let styleCode = `
+      .slides {
+        position: relative;
+      }
+      .controls {
+        position: relative;
+      }
+      .indicators {
+        display: flex;
+      }
+      .indicators__item {
+        display: block;
+        width: 10px;
+        height: 10px;
+        margin: 5px;
+        border-radius: 50%;
+        background-color: blue;
+        border:2px solid blue; 
+      }`;
+      styleContainer.innerHTML = styleCode;
+      carouselParent.appendChild(styleContainer);
     }
-    .indicators {
-      display: flex;
-    }
-    .indicators__item {
-      display: block;
-      width: 20px;
-      height: 20px;
-      background-color: gray;
-      margin: 5px;
-      border-radius: 10px;
-    }`;
-
-    styleContainer.innerHTML = styleCode;
-    container.appendChild(styleContainer);
-}
-
-function indicatorsHandler(e) {
-    let target = e.target;
-
-    if (target.classList.contains('indicators__item')) {
+  
+    function Handler(e) {
+      let target = e.target;
+  
+      if (target.classList.contains('indicators__item')) {
         target.style.backgroundColor = 'red';
-
+  
         if (prevIndicator !== null) prevIndicator.removeAttribute('style');
-
+  
         prevIndicator = target;
+      }
     }
-}
-
-function setListener() {
-    let indicatorsContainer = document.querySelector('div.indicators');
-
-    indicatorsContainer.addEventListener('click', indicatorsHandler);
-}
-
-function createCarousel(slidesCount = 5) {
-    // createContainer();
-    container = document.querySelector('#carousel');
-    createSlides(slidesCount);
-    createIndicators(slidesCount);
-    createControls();
-    createStyle();
-    setListener();
-}
-
-createCarousel();
+  
+    function clickListener() {
+      let indicatorsContainer = document.querySelector('.indicators');
+      indicatorsContainer.addEventListener('click', Handler);
+    }
+  
+    function createCarousel(n) {
+      foundCarouselWrapper();
+      createSlides(n);
+      createIndicators(n);
+      createControls(nthControls = 3);
+      createStyle();
+      clickListener();
+    }
+    createCarousel(5);
